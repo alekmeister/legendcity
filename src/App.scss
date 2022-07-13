@@ -135,7 +135,7 @@ $default_timer: 987ms;
   background-color: aquamarine;
   border: aquamarine 2px solid;
   border-radius: 0;
-  width: 120px;
+  width: 160px;
   height: 50px;
   text-decoration: none;
   transition: background 0.1s linear, color 0.1s linear;
@@ -147,10 +147,11 @@ $default_timer: 987ms;
 }
 
 .disabled {
-  color: $color_light;
   background-color: white;
+  border: black 1px solid;
+  color: black;
 }
 
-.form {
-  display: flex;
+.success {
+  display: none;
 }

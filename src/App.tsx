@@ -8,6 +8,8 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from 'yup';
 import {validPassword, validPhone} from "general/Variables";
 import cn from "classnames";
+import {postUserServer} from "store/users/actionCreators/postUser";
+import {User} from "store/users/types";
 
 type userInfo = {name: string, placeholder: string}
 
@@ -22,27 +24,14 @@ const Info: userInfo[] = [
 const titles = ['#', 'Имя', 'Фамилия', 'Телефон', 'E-mail','Пароль' ]
 
 const App: React.FC = () => {
-  const [modalActive, setModalActive] = useState(true)
-  // const [loadedUsers, setLoadedUsers] = useState<User[]>([])
+  const [modalActive, setModalActive] = useState(false)
   const [currentPage, setCurrentPage] = useState(1); // У апишки нету параметра offset, поэтому реализация через page
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(getUsers({ page: currentPage }));
-    // window.addEventListener('scroll', handleScroll)
+
   }, []);
   const data = useAppSelector((state) => state.users.users);
-
-  // const loadMoreUsers = () => {
-  //   setCurrentPage((currentPage)=> currentPage + 1)
-  //   dispatch(getUsers({ page: currentPage }))
-  // }
-  // const handleScroll =  (e : any) =>  {
-  //   if(window.innerHeight + e.target.documentElement.scrollTop >=  e.target.documentElement.scrollHeight) {
-  //     loadMoreUsers()
-  //
-  //   }
-  // }
-
 
   return (
     <div className="App">
@@ -64,14 +53,11 @@ const App: React.FC = () => {
         </tr>
         </thead>
         <tbody>
-          {data.map(({id, firstName, secondName, email, password, phone})=>(
+          {data.map((user)=>(
               <tr key={uuidv4()}>
-                <th scope="row">{id}</th>
-                <td>{secondName}</td>
-                <td>{firstName}</td>
-                <td>{phone}</td>
-                <td>{email}</td>
-                <td>{password}</td>
+                  {(Object.keys(user) as (keyof typeof user)[]).map((key)=>(
+                      <td>{user[key]}</td>
+                  ))}
               </tr>
           ))}
         </tbody>
@@ -92,8 +78,8 @@ const App: React.FC = () => {
               email: Yup.string().email('Неправильный email').required('Обязательное поле'),
               password: Yup.string().matches( validPassword, "Пароль должен быть на латинице, содержать не менее 8 символов, один в верхнем регистре, одну цифру и один символ").required('Обязательное поле'),
             })}
-            onSubmit={(values) => {
-              console.log(values);
+            onSubmit={(user) => {
+              dispatch(postUserServer(user))
             }}
         >
           {({ isSubmitting }) => (
@@ -105,14 +91,53 @@ const App: React.FC = () => {
                       </div>
                       )}
                 <button className={cn("btn", { ["disabled"]: isSubmitting })} type="submit" disabled={isSubmitting}>
-                  Отправить
+                    {isSubmitting ? "Отправляем..." : "Отправить"}
                 </button>
               </Form>
           )}
         </Formik>
+          <div className="success">Отправлено</div>
       </Modal>
     </div>
   );
 }
 
 export default App;
+
+
+// const TableHeader = () => {
+//     const columns = useAppSelector(dadsdasd)
+//     return (
+//         <thead className='header'>
+//         <tr>
+//             {titles.map((el) => (<th scope="col" key={uuidv4()}>{el}</th>))}
+//         </tr>
+//         </thead>
+//     )
+// }
+//
+// const TableBody = () => {
+//     return (
+//         <>
+//             <tbody>
+//             {data.map((user)=>(
+//                 <tr key={uuidv4()}>
+//                     {(Object.keys(user) as (keyof typeof user)[]).map((key)=>(
+//                         <td>{user[key]}</td>
+//                     ))}
+//                 </tr>
+//             ))}
+//             </tbody>
+//         </>
+//     )
+// }
+//
+//
+// export const Table = () => {
+//     return (
+//             <table className="table">
+//                 <TableHeader/>
+//                 <TableBody/>
+//             </table>
+//     )
+// }

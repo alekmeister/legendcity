@@ -1,8 +1,9 @@
 import {REQUEST_STATUS} from 'types/RequestStatuses';
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {SLICE_NAME} from "store/users/constants";
-import {State} from "store/users/types";
+import {State, User} from "store/users/types";
 import {getUsers} from "store/users/actionCreators/getUsers";
+
 
 const getInitialState = (): State => ({
     users:[],
@@ -12,7 +13,11 @@ const getInitialState = (): State => ({
 const slice = createSlice({
     name: SLICE_NAME,
     initialState: getInitialState(),
-    reducers: {},
+    reducers: {
+        postUserStore(state, {payload}: PayloadAction<User>) {
+            state.users.push(payload)
+        }
+    },
     extraReducers: (builder) => {
         // Получение пользователей
         builder.addCase(getUsers.pending, (state) => {
@@ -28,5 +33,5 @@ const slice = createSlice({
     },
 });
 
-export const {} = slice.actions;
+export const {postUserStore} = slice.actions;
 export default slice.reducer;
