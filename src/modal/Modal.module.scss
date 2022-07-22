@@ -11,19 +11,22 @@
   transition: 0.5s;
   opacity: 0;
   pointer-events: none;
+  backdrop-filter: blur(3px);
   &_active {
     opacity: 1;
     pointer-events: all;
-
   }
 }
 
 
 .content {
   background-color: white;
-  height: 600px;
-  width: 800px;
-  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 550px;
+  width: 485px;
+  padding: 50px;
   border-radius: 5px;
   transform: scale(0.5);
   transition: 0.3s all;
@@ -31,3 +34,4 @@
     transform: scale(1);
   }
 }
+

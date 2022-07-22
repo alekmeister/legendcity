@@ -1,0 +1,23 @@
+%button {
+  margin-bottom: 15px;
+  width: 120px;
+  height: 42px;
+  border: 1px solid black;
+  text-decoration:  none;
+  outline: none;
+  cursor: pointer;
+  background-color: #D8E6F3;
+  border-radius: 5px;
+  &:hover {
+    background-color: black;
+    color: white;
+    transition: 0.2s;
+  };
+  &_disabled {
+    visibility: hidden;
+  }
+}
+
+
+
+

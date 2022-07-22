@@ -1,14 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {User} from "store/users/types";
-import {SLICE_NAME} from "store/users/constants";
+import { User } from 'store/users/types';
+import { SLICE_NAME } from 'store/users/constants';
+import { REQUEST_STATUS } from 'types/RequestStatuses';
+import { setCreatingStatus } from 'store/users/slice';
 
-export const postUserServer = createAsyncThunk<string, User>(`${SLICE_NAME}/postUser`, async(newUser)=> {
-    try {
-       const response = await axios.post('https://62b0b45e196a9e9870296581.mockapi.io/users/', {...newUser})
-        return response.data
-    }
-    catch (e) {
-        throw new Error('Ошибка добавления пользователя')
-    }
-})
+export const postUserServer = createAsyncThunk<User, User>(`${SLICE_NAME}/postUser`, async (newUser, { dispatch }) => {
+  try {
+    const response = await axios.post('https://62b0b45e196a9e9870296581.mockapi.io/users/', { ...newUser });
+    setTimeout(() => {
+      dispatch(setCreatingStatus(REQUEST_STATUS.PENDING));
+    });
+    return response.data;
+  } catch (e) {
+    throw new Error('Ошибка добавления пользователя');
+  }
+});
