@@ -14,7 +14,8 @@ describe('TableBody', () => {
       unobserve: () => null,
       disconnect: () => null,
     });
-    window.IntersectionObserver = mockIntersectionObserver as any;
+
+    window.IntersectionObserver = mockIntersectionObserver as never;
   });
   it('should create TableBody with empty users', () => {
     mokedUseSelector.mockReturnValue({ users: [] });
