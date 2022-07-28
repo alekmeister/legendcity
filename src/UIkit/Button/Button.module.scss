@@ -20,11 +20,11 @@
    transition: 0.2s;
  };
   &_disabled {
-   visibility: hidden;
+    border: initial;
+   pointer-events: none;
   }
 }
 
-  //transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
 
 
 

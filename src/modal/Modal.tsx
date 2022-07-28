@@ -16,8 +16,8 @@ const Modal: React.FC<Props> = ({ active, setActive, children, cb }) => {
     }
   };
   return (
-    <div className={cn(style.modal, { [style.modal_active]: active })} onClick={handleCloseModal}>
-      <div className={cn(style.content, { [style.content_active]: active })} onClick={(e) => e.stopPropagation()}>
+    <div role="presentation" className={cn(style.modal, { [style.modal_active]: active })} onClick={handleCloseModal}>
+      <div role="presentation" className={cn(style.content, { [style.content_active]: active })} onClick={(e) => e.stopPropagation()}>
         {children && children}
       </div>
     </div>

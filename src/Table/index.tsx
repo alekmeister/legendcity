@@ -2,11 +2,15 @@ import React from 'react';
 import { TableHeader } from 'TableHeader';
 import { TableBody } from 'TableBody/TableBody';
 
-export const Table: React.FC = () => {
+interface Props {
+  cb: () => void;
+}
+
+export const Table: React.FC<Props> = ({ cb }) => {
   return (
     <table className="table">
       <TableHeader />
-      <TableBody />
+      <TableBody cb={cb} />
     </table>
   );
 };

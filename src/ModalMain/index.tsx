@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { ErrorMessage, Field, Form, Formik, FormikProps } from 'formik';
-import * as Yup from 'yup';
-import { validPassword, validPhone } from 'RegularExpressions';
 import { postUserServer } from 'store/users/actionCreators/postUser';
 import cn from 'classnames';
 import { REQUEST_STATUS } from 'types/RequestStatuses';
 import Modal from 'modal/Modal';
 import { useAppDispatch, useAppSelector } from 'store/types';
 import { v4 as uuidv4 } from 'uuid';
+import * as Yup from 'yup';
+import { validPassword, validPhone } from 'RegularExpressions';
 import style from './ModalMain.module.scss';
 
 interface props {
@@ -41,16 +41,13 @@ const FORM_VALUES: IForm = {
 };
 
 export const ModalMain: React.FC<props> = ({ setModalActive, modalActive }) => {
-  const closeModal = () => setModalActive(false);
   const ref = useRef<FormikProps<IForm>>(null);
   const dispatch = useAppDispatch();
   const creatingStatus = useAppSelector((state) => state.users.creatingStatus);
 
-  useEffect(() => {
-    if (creatingStatus === REQUEST_STATUS.SUCCESS) {
-      closeModal();
-    }
-  }, [creatingStatus]);
+  const isLoading = creatingStatus === REQUEST_STATUS.LOADING;
+  const isSuccess = creatingStatus === REQUEST_STATUS.SUCCESS;
+  const isError = creatingStatus === REQUEST_STATUS.ERROR;
 
   const switchBtnState = () => {
     switch (creatingStatus) {
@@ -61,7 +58,7 @@ export const ModalMain: React.FC<props> = ({ setModalActive, modalActive }) => {
       case REQUEST_STATUS.SUCCESS:
         return 'Отправлено';
       case REQUEST_STATUS.ERROR:
-        return 'Ошибка отправки, попробуйте позже';
+        return 'Ошибка отправки';
       default:
         return 'Отправить';
     }
@@ -70,8 +67,6 @@ export const ModalMain: React.FC<props> = ({ setModalActive, modalActive }) => {
   const handleResetForm = () => {
     ref?.current?.resetForm();
   };
-
-  if (!modalActive) return null;
 
   return (
     <Modal active={modalActive} setActive={setModalActive} cb={handleResetForm}>
@@ -86,18 +81,20 @@ export const ModalMain: React.FC<props> = ({ setModalActive, modalActive }) => {
         })}
         onSubmit={(user, { resetForm }) => {
           dispatch(postUserServer(user));
-          resetForm();
+          if (isSuccess) {
+            resetForm();
+          }
         }}
         innerRef={ref}
       >
         <Form className={style.form}>
           {Info.map(({ placeholder, name }) => (
             <div className={style.form_inner} key={uuidv4()}>
-              <Field className={style.field} placeholder={placeholder} name={name} />
+              <Field className={style.field} placeholder={placeholder} name={name} disabled={isLoading} />
               <ErrorMessage className={style.valid} name={name} component="div" />
             </div>
           ))}
-          <button className={cn(style.button, { disabled: creatingStatus === REQUEST_STATUS.LOADING })} type="submit" disabled={creatingStatus === REQUEST_STATUS.LOADING} onClick={() => switchBtnState()}>
+          <button className={cn(style.button, { [style.button_disabled]: isLoading, [style.button_error]: isError })} type="submit" disabled={isLoading}>
             {switchBtnState()}
           </button>
         </Form>

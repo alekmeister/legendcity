@@ -1,4 +1,3 @@
-// @ts-ignore
 import { jest } from '@jest/globals';
 import { configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';

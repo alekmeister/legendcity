@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/types';
 import { getUsers } from 'store/users/actionCreators/getUsers';
 import { Table } from 'Table';
@@ -6,22 +6,36 @@ import { ModalMain } from 'ModalMain';
 import { Button } from 'UIkit/Button/';
 import 'App.scss';
 import { REQUEST_STATUS } from 'types/RequestStatuses';
-import { Preloader } from 'preloader/Preloader';
+import { setOpenModal, setPage } from 'store/users/slice';
+import { ReactComponent as Loader } from './preloader/preloader.svg';
 
 const App: React.FC = () => {
-  const [modalActive, setModalActive] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); // У апишки нету параметра offset, поэтому реализация через page
   const dispatch = useAppDispatch();
-  const tableLoadingStatus = useAppSelector((state) => state.users.status);
+
+  const { status: tableLoadingStatus, page, isOpenModal } = useAppSelector((state) => state.users);
   const isLoading = tableLoadingStatus === REQUEST_STATUS.LOADING;
+
+  const getMoreUsers = () => {
+    const nextPage = page + 1;
+    dispatch(setPage(nextPage));
+    dispatch(getUsers({ page: nextPage }));
+  };
+
+  const setModalStatus = (status: boolean) => {
+    dispatch(setOpenModal(status));
+  };
+
   useEffect(() => {
-    dispatch(getUsers({ page: currentPage }));
+    dispatch(getUsers({ page }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div className="App">
-      <Button setModalActive={setModalActive} modalActive={modalActive} />
-      {isLoading ? <Preloader /> : <Table />}
-      <ModalMain modalActive={modalActive} setModalActive={setModalActive} />
+      <Button disabled={isLoading} setModalActive={setModalStatus} modalActive={isOpenModal} />
+      <Table cb={getMoreUsers} />
+      {isLoading && <Loader />}
+      {isOpenModal && <ModalMain modalActive={isOpenModal} setModalActive={setModalStatus} />}
     </div>
   );
 };

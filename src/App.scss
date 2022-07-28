@@ -8,11 +8,16 @@ $default_timer: 987ms;
 
 .App {
   text-align: center;
-  background-color: #AFCDE7;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   padding: 50px 250px;
 }
+
+svg{
+  width: 55px;
+  height: 13px;
+}
+
 @media (max-width: 1400px) {
   .App {
     padding: 50px 150px;
