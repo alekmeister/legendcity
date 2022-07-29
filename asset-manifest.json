@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/alekmeister/legendcity/static/css/main.1e8188ed.css",
-    "main.js": "/alekmeister/legendcity/static/js/main.7de453cd.js",
-    "index.html": "/alekmeister/legendcity/index.html",
-    "static/media/preloader.svg": "/alekmeister/legendcity/static/media/preloader.9956561dab52d188189e6f758f74b310.svg",
-    "main.1e8188ed.css.map": "/alekmeister/legendcity/static/css/main.1e8188ed.css.map",
-    "main.7de453cd.js.map": "/alekmeister/legendcity/static/js/main.7de453cd.js.map"
+    "main.css": "/legendcity/static/css/main.1e8188ed.css",
+    "main.js": "/legendcity/static/js/main.ebb8a5b7.js",
+    "index.html": "/legendcity/index.html",
+    "static/media/preloader.svg": "/legendcity/static/media/preloader.9956561dab52d188189e6f758f74b310.svg",
+    "main.1e8188ed.css.map": "/legendcity/static/css/main.1e8188ed.css.map",
+    "main.ebb8a5b7.js.map": "/legendcity/static/js/main.ebb8a5b7.js.map"
   },
   "entrypoints": [
     "static/css/main.1e8188ed.css",
-    "static/js/main.7de453cd.js"
+    "static/js/main.ebb8a5b7.js"
   ]
 }
